@@ -1,9 +1,11 @@
+import os
 import logging
 import threading
 import telegram
 from telegram.ext import Updater, CommandHandler
 from Scraper.scraper import Scraper
 
+TOKEN = '1231856261:AAEP2kvBYIPg2YwCXaCnEeidiQF7cYdA-Lw'
 interested_clients = set()
 
 kwords = ["js", "javascript", "java", "sql", "mysql", "c", "golang", "python", "database", "angular", "react", "desktop", "site", "website", "html", "css", "developer", "dev", "programmer", "code", "coder", "cloud", "bootstrap", "linux"]
@@ -16,12 +18,16 @@ def start(update, ctx):
 class bot:
 
     def __init__(self):
-        self.bot = telegram.Bot(token='1231856261:AAEP2kvBYIPg2YwCXaCnEeidiQF7cYdA-Lw')
+        PORT = int(os.environ.get('PORT', 5000))
+        self.bot = telegram.Bot(token=TOKEN)
         self.updater = Updater(use_context=True, bot=self.bot)
         self.dispatcher = self.updater.dispatcher
         self.dispatcher.add_handler(CommandHandler('start', start))
         self.x = threading.Thread(target=self.async_scraping, daemon=True)
-        self.updater.start_polling()
+        self.updater.start_webhook(listen="0.0.0.0",
+                          port=int(PORT),
+                          url_path=TOKEN)
+        self.updater.bot.setWebhook('https://redjobot.herokuapp.com/' + TOKEN)
         self.x.start()
 
     def async_scraping(self):
