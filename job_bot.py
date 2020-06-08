@@ -22,7 +22,7 @@ def get_logs(update, ctx):
     file = open("logs", "a+")
     log_content = file.read()
     ctx.bot.send_message(chat_id=update.effective_chat.id,
-                         text=log_content)
+                         text=log_content if len(log_content) > 0 else "nope")
     file = open("logs", "a+")
 class bot:
 
