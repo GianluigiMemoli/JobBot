@@ -32,17 +32,17 @@ class Scraper:
         for to_match in self.match_in:
             raw_text = getattr(new_post, to_match)
             texts.append(raw_text.lower())
-        print("texts {}\n".format(texts), self.ouput_stream)
+        print("texts {}\n".format(texts), self.output_stream)
         # If no must_match is specified it's given for satisfied
         must_matched = len(self.must_match) == 0
 
         for must_matching in self.must_match:
             for text in texts:
                 if re.match(must_matching, text, re.IGNORECASE) is not None:
-                    print("regex matched\n", self.ouput_stream)
+                    print("regex matched\n", self.output_stream)
                     must_matched = True
                 else:
-                    print("regex: {} not matched on {}\n".format(must_matching, text), file=self.ouput_stream)
+                    print("regex: {} not matched on {}\n".format(must_matching, text), file=self.output_stream)
         if not must_matched:
             return False
 
@@ -51,9 +51,9 @@ class Scraper:
             for keyword in self.keywords:
                 if keyword in text:
                     keyword_matched = True
-                    print("matched kw: {} on: {}\n".format(keyword, text), file=self.ouput_stream)
+                    print("matched kw: {} on: {}\n".format(keyword, text), file=self.output_stream)
                 else:
-                    print("not matched kw: {} on: {}\n".format(keyword, text), file=self.ouput_stream)
+                    print("not matched kw: {} on: {}\n".format(keyword, text), file=self.output_stream)
         return keyword_matched and must_matched
 
 
