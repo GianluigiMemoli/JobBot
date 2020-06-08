@@ -24,7 +24,7 @@ class Scraper:
         self.keywords = [x.lower() for x in keywords]
         self.match_in = match_in
         self.listeners = []
-        print("matchin: {}".format(self.match_in), file=self.output_stream)
+        print("matchin: {}".format(self.match_in), file=self.output_stream, flush=True)
 
     def match_pattern(self, new_post: praw.reddit.Submission):
 
