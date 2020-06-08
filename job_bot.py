@@ -19,6 +19,7 @@ def start(update, ctx):
 def get_logs(update, ctx):
     global file
     file.close()
+    file = open("logs", "a+")
     log_content = file.read()
     ctx.bot.send_message(chat_id=update.effective_chat.id,
                          text=log_content)
