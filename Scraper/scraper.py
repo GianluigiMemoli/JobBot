@@ -1,3 +1,6 @@
+import datetime
+import os
+
 import praw
 import re
 import sys
@@ -8,6 +11,15 @@ config = {
     'user_agent': 'desktop:job_bot:v0.1(by /u/gianja98)',
     'username': 'Gianja98'
 }
+
+if not os.path.exists("logs"):
+    os.mkdir("logs")
+
+def write_logs(text):
+    filename = "{}/{}".format("logs",str(datetime.date.today()))
+    with open(filename, "a+") as log_file:
+        time = str(datetime.datetime.now())
+        log_file.write("[{}] {}\n".format(time.split('.')[0], text))
 
 
 class Scraper:
@@ -24,7 +36,7 @@ class Scraper:
         self.keywords = [x.lower() for x in keywords]
         self.match_in = match_in
         self.listeners = []
-        print("matchin: {}".format(self.match_in))
+        write_logs("matchin: {}".format(self.match_in))
 
     def match_pattern(self, new_post: praw.reddit.Submission):
 
@@ -32,17 +44,17 @@ class Scraper:
         for to_match in self.match_in:
             raw_text = getattr(new_post, to_match)
             texts.append(raw_text.lower())
-        print("texts {}\n".format(texts))
+        write_logs("texts {}\n".format(texts))
         # If no must_match is specified it's given for satisfied
         must_matched = len(self.must_match) == 0
 
         for must_matching in self.must_match:
             for text in texts:
                 if re.match(must_matching, text, re.IGNORECASE) is not None:
-                    print("regex matched\n")
+                    write_logs("regex matched\n")
                     must_matched = True
                 else:
-                    print("regex: {} not matched on {}\n".format(must_matching, text))
+                    write_logs("regex: {} not matched on {}\n".format(must_matching, text))
         if not must_matched:
             return False
 
@@ -51,9 +63,9 @@ class Scraper:
             for keyword in self.keywords:
                 if keyword in text:
                     keyword_matched = True
-                    print("matched kw: {} on: {}\n".format(keyword, text))
+                    write_logs("matched kw: {} on: {}\n".format(keyword, text))
                 else:
-                    print("not matched kw: {} on: {}\n".format(keyword, text))
+                    write_logs("not matched kw: {} on: {}\n".format(keyword, text))
         return keyword_matched and must_matched
 
     def analyze_stream(self):
@@ -71,9 +83,6 @@ class Scraper:
         self.listeners.remove(listener)
 
     def on_new_post_match(self, post):
-        print("I'm a listenr who got")
-        print()
-        print(post)
         for listener in self.listeners:
             listener.on_new_post(post)
 

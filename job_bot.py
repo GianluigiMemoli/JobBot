@@ -40,14 +40,6 @@ kwords = [
     "node.js"
 ]
 
-if not os.path.exists("logs"):
-    os.mkdir("logs")
-
-def write_logs(text):
-    filename = "{}/{}".format("logs",str(datetime.date.today()))
-    with open(filename, "a+") as log_file:
-        time = str(datetime.datetime.now())
-        log_file.write("[{}] {}\n".format(time.split('.')[0], text))
 
 
 
@@ -76,7 +68,6 @@ class bot:
 
         self.x = threading.Thread(target=self.async_scraping, daemon=True)
         self.x.start()
-        write_logs("started")
         self.updater.start_polling()
 
 
