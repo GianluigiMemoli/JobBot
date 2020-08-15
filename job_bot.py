@@ -81,7 +81,7 @@ class bot:
 
 
     def async_scraping(self):
-        self.scraper = Scraper(kwords, [Scraper.TITLE, Scraper.BODY], ['^\s*\[\s*COSA\s*\]'])
+        self.scraper = Scraper(kwords, [Scraper.TITLE, Scraper.BODY], ['^\s*\[\s*HIRING\s*\]'])
         self.scraper.add_listener(self)
         self.scraper.analyze_stream()
 

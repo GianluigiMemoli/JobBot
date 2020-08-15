@@ -59,7 +59,7 @@ class Scraper:
     def analyze_stream(self):
         reddit = praw.Reddit(**config)
         while True:
-            for submission in reddit.subreddit('test').stream.submissions(skip_existing=True):
+            for submission in reddit.subreddit('forhire').stream.submissions(skip_existing=True):
                 if self.match_pattern(submission):
                     self.on_new_post_match(submission)
 
