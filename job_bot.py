@@ -1,4 +1,4 @@
-import datetime
+import json
 import os
 import logging
 import configparser
@@ -7,38 +7,15 @@ import telegram
 from telegram.ext import Updater, CommandHandler
 from Scraper.scraper import Scraper
 
-TOKEN = '1231856261:AAEP2kvBYIPg2YwCXaCnEeidiQF7cYdA-Lw'
+cnfParser = configparser.ConfigParser()
+cnfParser.read("config.ini")
+TOKEN = cnfParser["Bot"]["TOKEN"]
+
 interested_clients = set()
 
-kwords = [
-    "js",
-    "javascript",
-    "java",
-    "sql",
-    "mysql",
-    "c",
-    "golang",
-    "python",
-    "database",
-    "angular",
-    "react",
-    "desktop",
-    "site",
-    "website",
-    "html",
-    "css",
-    "developer",
-    "dev",
-    "programmer",
-    "code",
-    "coder",
-    "cloud",
-    "bootstrap",
-    "linux",
-    "developers",
-    "node",
-    "node.js"
-]
+with open("match_words.json") as kwords_file:
+    json_read = json.load(kwords_file)
+    kwords = json_read["kwords"]
 
 
 
@@ -59,7 +36,6 @@ def get_logs(update, ctx):
 class bot:
 
     def __init__(self):
-        PORT = int(os.environ.get('PORT', 5000))
         self.bot = telegram.Bot(token=TOKEN)
         self.updater = Updater(use_context=True, bot=self.bot)
         self.dispatcher = self.updater.dispatcher
