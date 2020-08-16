@@ -3,15 +3,8 @@ import os
 import configparser
 import praw
 import re
-import sys
-'''config = {
-    'client_id': 'mdqG2sGK2dqvGA',
-    'client_secret': '6xI4XJ-3Q2fti5namgWMUwJgDCI',
-    'password': 'QzJWH9BDb5gpPDz',
-    'user_agent': 'desktop:job_bot:v0.1(by /u/gianja98)',
-    'username': 'Gianja98'
-}
-'''
+
+
 cnfParser = configparser.ConfigParser()
 cnfParser.read("config.ini")
 config = dict(cnfParser.items("Reddit"))
@@ -20,7 +13,7 @@ if not os.path.exists("logs"):
     os.mkdir("logs")
 
 def write_logs(text):
-    filename = "{}/{}".format("logs",str(datetime.date.today()))
+    filename = "{}/{}.txt".format("logs",str(datetime.date.today()))
     with open(filename, "a+") as log_file:
         time = str(datetime.datetime.now())
         log_file.write("[{}] {}\n".format(time.split('.')[0], text))
