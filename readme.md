@@ -4,7 +4,7 @@ In `match_words.json` there's the array of keywords that the `Scraper.py` will t
 In order to try the bot run:
 
 
-- `pip install -r requiremnts.txt` 
+- `pip install -r requirements.txt` 
 
 
 - `python job_bot.py`
